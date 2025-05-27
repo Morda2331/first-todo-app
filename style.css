@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 .container {
     max-width: 400px;
     margin: 50px auto;
@@ -11,23 +12,37 @@ body {
     padding: 20px;
     border-radius: 8px;
 }
+
 form {
     display: flex;
 }
+
 form input {
     flex: 1;
     padding: 10px;
 }
+
 form button {
     padding: 10px;
 }
+
 ul {
     list-style: none;
     padding: 0;
 }
+
 li {
     display: flex;
     justify-content: space-between;
     padding: 8px 0;
     border-bottom: 1px solid #ddd;
+}
+
+/* Стиль для поля редактирования по двойному клику */
+.edit-input {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
