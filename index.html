@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Todo App</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>Мой список задач</h1>
 
     <form id="todo-form">
-      <input type="text" id="todo-input" placeholder="Добавь новую задачу..." required>
+      <input type="text" id="todo-input" placeholder="Добавь новую задачу..." required />
       <button type="submit">Добавить</button>
     </form>
 
     <ul id="todo-list"></ul>
 
-    <!-- Статистика задач -->
     <div id="task-stats"></div>
+
+    <div id="filters">
+      <button data-filter="all" class="filter-btn active">Все</button>
+      <button data-filter="active" class="filter-btn">Активные</button>
+      <button data-filter="completed" class="filter-btn">Выполненные</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
