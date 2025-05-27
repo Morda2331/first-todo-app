@@ -1,45 +1,38 @@
-// Загружаем задачи из localStorage при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    savedTasks.forEach(task => addTask(task));
-});
+let tasks = [];
 
-// Обработчик формы — добавление задачи
-document.getElementById('todo-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const input = document.getElementById('todo-input');
-    const task = input.value.trim();
-    if (task !== '') {
-        addTask(task);
-        input.value = '';
-        saveTasks();
-    }
-});
+window.onload = () => {
+  if (localStorage.getItem('tasks')) {
+    tasks = JSON.parse(localStorage.getItem('tasks'));
+    tasks.forEach(task => addTaskToDOM(task));
+  }
+};
 
-// Добавляем задачу в список
-function addTask(task) {
-    const list = document.getElementById('todo-list');
-    const li = document.createElement('li');
-    li.textContent = task;
+function addTaskToDOM(taskText) {
+  const list = document.getElementById('task-list');
 
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = 'Delete';
-    removeBtn.onclick = () => {
-        list.removeChild(li);
-        saveTasks();
-    };
+  const li = document.createElement('li');
+  li.textContent = taskText;
 
-    li.appendChild(removeBtn);
-    list.appendChild(li);
-}
-
-// Сохраняем задачи в localStorage
-function saveTasks() {
-    const list = document.getElementById('todo-list');
-    const tasks = [];
-    list.querySelectorAll('li').forEach(li => {
-        // Убираем текст кнопки Delete из текста задачи
-        tasks.push(li.firstChild.textContent);
-    });
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = 'Удалить';
+  deleteBtn.onclick = () => {
+    list.removeChild(li);
+    tasks = tasks.filter(t => t !== taskText);
     localStorage.setItem('tasks', JSON.stringify(tasks));
+  };
+
+  li.appendChild(deleteBtn);
+  list.appendChild(li);
 }
+
+document.getElementById('task-form').onsubmit = function(e) {
+  e.preventDefault();
+  const input = document.getElementById('task-input');
+  const taskText = input.value.trim();
+  if (taskText) {
+    tasks.push(taskText);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    addTaskToDOM(taskText);
+    input.value = '';
+  }
+};
