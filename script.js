@@ -1,9 +1,23 @@
 let tasks = [];
 
 window.onload = () => {
+  // Загружаем задачи из localStorage
   if (localStorage.getItem('tasks')) {
     tasks = JSON.parse(localStorage.getItem('tasks'));
     tasks.forEach(task => addTaskToDOM(task));
+  }
+};
+
+// Добавление новой задачи
+document.getElementById('add-btn').onclick = () => {
+  const input = document.getElementById('task-input');
+  const text = input.value.trim();
+
+  if (text !== '') {
+    tasks.push(text);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    addTaskToDOM(text);
+    input.value = '';
   }
 };
 
@@ -14,7 +28,7 @@ function addTaskToDOM(taskText) {
   li.textContent = taskText;
 
   const deleteBtn = document.createElement('button');
-  deleteBtn.textContent = 'Удалить';
+  deleteBtn.textContent = '❌';
   deleteBtn.onclick = () => {
     list.removeChild(li);
     tasks = tasks.filter(t => t !== taskText);
@@ -24,15 +38,3 @@ function addTaskToDOM(taskText) {
   li.appendChild(deleteBtn);
   list.appendChild(li);
 }
-
-document.getElementById('todo-form').onsubmit = function(e) {
-  e.preventDefault();
-  const input = document.getElementById('todo-input');
-  const taskText = input.value.trim();
-  if (taskText) {
-    tasks.push(taskText);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    addTaskToDOM(taskText);
-    input.value = '';
-  }
-};
