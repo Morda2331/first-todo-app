@@ -1,16 +1,17 @@
 let tasks = [];
 
+// Загружаем задачи при старте
 window.onload = () => {
-  // Загружаем задачи из localStorage
   if (localStorage.getItem('tasks')) {
     tasks = JSON.parse(localStorage.getItem('tasks'));
     tasks.forEach(task => addTaskToDOM(task));
   }
 };
 
-// Добавление новой задачи
-document.getElementById('add-btn').onclick = () => {
-  const input = document.getElementById('task-input');
+// Обработка формы
+document.getElementById('todo-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('todo-input');
   const text = input.value.trim();
 
   if (text !== '') {
@@ -19,8 +20,9 @@ document.getElementById('add-btn').onclick = () => {
     addTaskToDOM(text);
     input.value = '';
   }
-};
+});
 
+// Функция добавления задачи в список
 function addTaskToDOM(taskText) {
   const list = document.getElementById('todo-list');
 
