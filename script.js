@@ -1,6 +1,6 @@
 let tasks = [];
 
-// Функция обновления счётчика задач
+// Обновление счётчика задач
 function updateStats() {
   const total = tasks.length;
   const completed = tasks.filter(task => task.completed).length;
@@ -9,17 +9,17 @@ function updateStats() {
   statsDiv.textContent = `Всего: ${total} | Выполнено: ${completed} | Осталось: ${remaining}`;
 }
 
-// Загрузка задач из localStorage
+// Загрузка задач при старте
 window.onload = () => {
   const saved = localStorage.getItem('tasks');
   if (saved) {
     tasks = JSON.parse(saved);
     tasks.forEach(task => addTaskToDOM(task));
   }
-  updateStats(); // обновляем счётчик после загрузки
+  updateStats();
 };
 
-// Добавление новой задачи
+// Обработка добавления новой задачи
 document.getElementById('todo-form').addEventListener('submit', (e) => {
   e.preventDefault();
   const input = document.getElementById('todo-input');
@@ -30,12 +30,12 @@ document.getElementById('todo-form').addEventListener('submit', (e) => {
     tasks.push(newTask);
     localStorage.setItem('tasks', JSON.stringify(tasks));
     addTaskToDOM(newTask);
-    updateStats(); // обновляем счётчик после добавления
+    updateStats();
     input.value = '';
   }
 });
 
-// Добавить задачу в DOM
+// Добавление задачи в DOM
 function addTaskToDOM(task) {
   const list = document.getElementById('todo-list');
 
@@ -43,24 +43,48 @@ function addTaskToDOM(task) {
   if (task.completed) li.classList.add('completed');
   li.textContent = task.text;
 
-  // Изначальная установка слушателей (клик, удаление)
-  setupListeners(li, task);
+  // Двойной клик — редактирование задачи
+  li.addEventListener('dblclick', () => {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = task.text;
+    input.className = 'edit-input';
+    li.innerHTML = '';
+    li.appendChild(input);
+    input.focus();
 
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        saveEdit();
+      }
+    });
+
+    input.addEventListener('blur', saveEdit);
+
+    function saveEdit() {
+      const newText = input.value.trim();
+      if (newText !== '') {
+        task.text = newText;
+      }
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      li.textContent = task.text;
+      setupListeners(li, task);
+    }
+  });
+
+  setupListeners(li, task);
   list.appendChild(li);
 }
 
-// Вынес обработчики в функцию, чтобы можно было заново их добавить после редактирования
+// Обработчики нажатий (выполнено, удалить)
 function setupListeners(li, task) {
-  // Клик — отметка выполнено
   li.onclick = () => {
     task.completed = !task.completed;
     li.classList.toggle('completed');
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    updateStats(); // обновляем счётчик при изменении статуса
+    updateStats();
   };
 
-  // Удаление через кнопку
-  // Удаляем старую кнопку, если есть
   const oldBtn = li.querySelector('button');
   if (oldBtn) oldBtn.remove();
 
@@ -71,7 +95,7 @@ function setupListeners(li, task) {
     li.remove();
     tasks = tasks.filter(t => t !== task);
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    updateStats(); // обновляем счётчик после удаления
+    updateStats();
   };
   li.appendChild(deleteBtn);
 }
