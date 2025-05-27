@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Todo App</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <div class="container">
         <h1>Todo List</h1>
         <form id="todo-form">
-            <input type="text" id="todo-input" placeholder="Add a new task..." required>
+            <input type="text" id="todo-input" placeholder="Add a new task..." required />
             <button type="submit">Add</button>
         </form>
         <ul id="todo-list"></ul>
+        <!-- Вот здесь блок для счётчика задач -->
         <div id="task-stats" style="margin-top: 10px; font-weight: bold;">
-  Всего: 0 | Выполнено: 0 | Осталось: 0
-</div>
+            Всего: 0 | Выполнено: 0 | Осталось: 0
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
