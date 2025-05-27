@@ -8,6 +8,36 @@ function renderTask(text, completed = false) {
         taskText.classList.add('completed');
     }
 
+    // 🔁 Редактирование по двойному клику
+    taskText.addEventListener('dblclick', () => {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = taskText.textContent;
+        input.classList.add('edit-input');
+        li.replaceChild(input, taskText);
+        input.focus();
+
+        input.addEventListener('blur', finishEdit);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                finishEdit();
+            }
+        });
+
+        function finishEdit() {
+            const newText = input.value.trim();
+            if (newText !== '') {
+                const task = tasks.find(t => t.text === text);
+                if (task) {
+                    task.text = newText;
+                    taskText.textContent = newText;
+                    saveTasks();
+                }
+            }
+            li.replaceChild(taskText, input);
+        }
+    });
+
     const completeBtn = document.createElement('button');
     completeBtn.textContent = 'Выполнено';
     completeBtn.addEventListener('click', () => {
