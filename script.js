@@ -8,7 +8,7 @@ window.onload = () => {
 };
 
 function addTaskToDOM(taskText) {
-  const list = document.getElementById('task-list');
+  const list = document.getElementById('todo-list');
 
   const li = document.createElement('li');
   li.textContent = taskText;
@@ -25,9 +25,9 @@ function addTaskToDOM(taskText) {
   list.appendChild(li);
 }
 
-document.getElementById('task-form').onsubmit = function(e) {
+document.getElementById('todo-form').onsubmit = function(e) {
   e.preventDefault();
-  const input = document.getElementById('task-input');
+  const input = document.getElementById('todo-input');
   const taskText = input.value.trim();
   if (taskText) {
     tasks.push(taskText);
