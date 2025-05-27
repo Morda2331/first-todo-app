@@ -121,3 +121,27 @@ function setupFilterButtons() {
     };
   });
 }
+
+// Очистка выполненных с подтверждением и плавным удалением
+document.getElementById('clear-completed-btn').addEventListener('click', () => {
+  const completedTasks = document.querySelectorAll('#todo-list li.completed');
+  if (completedTasks.length === 0) {
+    alert('Выполненных задач нет');
+    return;
+  }
+  if (confirm('Ты точно хочешь удалить все выполненные задачи?')) {
+    let removedCount = 0;
+    completedTasks.forEach(li => {
+      li.style.transition = 'opacity 0.5s';
+      li.style.opacity = '0';
+      setTimeout(() => {
+        const text = li.querySelector('span').textContent;
+        tasks = tasks.filter(task => task.text !== text);
+        removedCount++;
+        if (removedCount === completedTasks.length) {
+          saveAndRender();
+        }
+      }, 500);
+    });
+  }
+});
