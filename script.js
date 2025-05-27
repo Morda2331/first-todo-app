@@ -1,41 +1,46 @@
 let tasks = [];
+let currentFilter = 'all'; // all, active, completed
 
-// Обновляем статистику задач
-function updateStats() {
-  const total = tasks.length;
-  const completed = tasks.filter(task => task.completed).length;
-  const remaining = total - completed;
-  const statsDiv = document.getElementById('task-stats');
-  statsDiv.textContent = `Всего: ${total} | Выполнено: ${completed} | Осталось: ${remaining}`;
-}
-
-// Загружаем задачи при открытии
 window.onload = () => {
   const saved = localStorage.getItem('tasks');
   if (saved) {
     tasks = JSON.parse(saved);
-    tasks.forEach(task => addTaskToDOM(task));
   }
+  renderTasks();
   updateStats();
+  setupFilterButtons();
 };
 
-// Добавление задачи через форму
 document.getElementById('todo-form').addEventListener('submit', (e) => {
   e.preventDefault();
   const input = document.getElementById('todo-input');
   const text = input.value.trim();
 
   if (text !== '') {
-    const newTask = { text, completed: false };
-    tasks.push(newTask);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    addTaskToDOM(newTask);
-    updateStats();
+    tasks.push({ text, completed: false });
+    saveAndRender();
     input.value = '';
   }
 });
 
-// Отображение задачи в списке
+function saveAndRender() {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  renderTasks();
+  updateStats();
+}
+
+function renderTasks() {
+  const list = document.getElementById('todo-list');
+  list.innerHTML = '';
+
+  let filteredTasks = [];
+  if (currentFilter === 'all') filteredTasks = tasks;
+  else if (currentFilter === 'active') filteredTasks = tasks.filter(t => !t.completed);
+  else if (currentFilter === 'completed') filteredTasks = tasks.filter(t => t.completed);
+
+  filteredTasks.forEach(task => addTaskToDOM(task));
+}
+
 function addTaskToDOM(task) {
   const list = document.getElementById('todo-list');
 
@@ -50,10 +55,7 @@ function addTaskToDOM(task) {
   doneBtn.textContent = task.completed ? '✅' : '☐';
   doneBtn.onclick = () => {
     task.completed = !task.completed;
-    li.classList.toggle('completed');
-    doneBtn.textContent = task.completed ? '✅' : '☐';
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    updateStats();
+    saveAndRender();
   };
 
   // Кнопка "Удалить"
@@ -61,10 +63,8 @@ function addTaskToDOM(task) {
   deleteBtn.textContent = '❌';
   deleteBtn.onclick = (e) => {
     e.stopPropagation();
-    li.remove();
     tasks = tasks.filter(t => t !== task);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    updateStats();
+    saveAndRender();
   };
 
   // Редактирование по двойному клику
@@ -89,18 +89,35 @@ function addTaskToDOM(task) {
       const newText = input.value.trim();
       if (newText !== '') {
         task.text = newText;
+        saveAndRender();
+      } else {
+        renderTasks();
       }
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      li.innerHTML = '';
-      addTaskToDOM(task);
-      updateStats();
     }
   });
 
-  // Добавление элементов в строку
-  li.innerHTML = '';
   li.appendChild(textSpan);
   li.appendChild(doneBtn);
   li.appendChild(deleteBtn);
   list.appendChild(li);
+}
+
+function updateStats() {
+  const total = tasks.length;
+  const completed = tasks.filter(t => t.completed).length;
+  const remaining = total - completed;
+  const statsDiv = document.getElementById('task-stats');
+  statsDiv.textContent = `Всего: ${total} | Выполнено: ${completed} | Осталось: ${remaining}`;
+}
+
+function setupFilterButtons() {
+  const buttons = document.querySelectorAll('.filter-btn');
+  buttons.forEach(btn => {
+    btn.onclick = () => {
+      currentFilter = btn.getAttribute('data-filter');
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderTasks();
+    };
+  });
 }
