@@ -1,138 +1,105 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  margin: 0;
-  padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-  max-width: 400px;
-  margin: 50px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 50px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+    text-align: center;
+    color: #333;
 }
 
 form {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 form input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 form button {
-  padding: 10px 15px;
-  background: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+    padding: 10px 20px;
+    background: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 form button:hover {
-  background: #2980b9;
+    background: #0056b3;
 }
 
 ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #ddd;
-  transition: opacity 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
 }
 
-li.completed span {
-  text-decoration: line-through;
-  color: #888;
+li span {
+    flex: 1;
+    word-break: break-word;
 }
 
-li button {
-  margin-left: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
+/* Стиль выполненной задачи */
+.completed {
+    text-decoration: line-through;
+    color: #999;
 }
 
-li button:hover {
-  color: red;
+/* Кнопки */
+.done-btn {
+    background-color: lightgreen;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: background 0.3s;
 }
 
-#task-stats {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #555;
-  text-align: center;
+.done-btn:hover {
+    background-color: green;
 }
 
-#filters {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-  flex-wrap: wrap;
+.delete-btn {
+    background-color: tomato;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s;
 }
 
-.filter-btn {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background: white;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.filter-btn.active {
-  background: #3498db;
-  color: white;
-  border-color: #2980b9;
-}
-
-.filter-btn:hover {
-  background: #2980b9;
-  color: white;
-}
-
-#clear-completed-container {
-  text-align: center;
-  margin-top: 10px;
-}
-
-#clear-completed-btn {
-  padding: 6px 12px;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#clear-completed-btn:hover {
-  background: #c0392b;
-}
-
-.edit-input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.delete-btn:hover {
+    background-color: red;
 }
